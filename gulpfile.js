@@ -7,7 +7,7 @@ let rename = require('gulp-rename');
 let maps = require('gulp-sourcemaps');
 let imagemin = require('gulp-imagemin');
 let del = require('del');
-let browserSync = require('browser-sync').create;
+let browserSync = require('browser-sync').create();
 
 gulp.task('scripts', function (){
   return gulp.src('js/**/*.js')
@@ -26,7 +26,7 @@ gulp.task('styles', function (){
   .pipe(rename('all.min.css'))
   .pipe(maps.write('./'))
   .pipe(gulp.dest('dist/styles'))
-  .pipe(browserSync.stream({match: '**/*.css'}));
+  .pipe(browserSync.stream());
 });
 
 
@@ -53,19 +53,21 @@ gulp.task('build',['clean'], function(){
 
 // run build task and serve project using a local web server
 gulp.task('serve', ['build'], function() {
+  console.log('You got served!');
   return browserSync.init({
         server: {
             baseDir: "./"
         }
     });
+  
 });
-
-gulp.task('default', ['serve']);
 
 gulp.task('watch', function(){
   gulp.watch('sass/**/*.scss', ['styles']);
+  console.log("I'm watching you...");
 });
 
+gulp.task('default', ['watch', 'serve']);
 
 
 

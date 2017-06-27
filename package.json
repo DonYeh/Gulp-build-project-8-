@@ -9,6 +9,7 @@
   "author": "Donald Yeh",
   "license": "MIT",
   "devDependencies": {
+    "browser-sync": "^2.18.12",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^3.4.2",
