@@ -7,6 +7,7 @@ let rename = require('gulp-rename');
 let maps = require('gulp-sourcemaps');
 let imagemin = require('gulp-imagemin');
 let del = require('del');
+let browserSync = require('browser-sync').create;
 
 gulp.task('scripts', function (){
   return gulp.src('js/**/*.js')
@@ -24,14 +25,20 @@ gulp.task('styles', function (){
   .pipe(cleanCss())
   .pipe(rename('all.min.css'))
   .pipe(maps.write('./'))
-  .pipe(gulp.dest('dist/styles'));
+  .pipe(gulp.dest('dist/styles'))
+  .pipe(browserSync.stream({match: '**/*.css'}));
 });
 
 
-gulp.task('images', function(){
+gulp.task('images', ['icons'], function(){
   return gulp.src('images/*')
   .pipe(imagemin())
   .pipe(gulp.dest('dist/content'));
+});
+
+gulp.task('icons', function(){
+  return gulp.src('icons/**/*')
+  .pipe(gulp.dest('dist/content/icons'));
 });
 
 gulp.task('clean', function(){
@@ -44,10 +51,19 @@ gulp.task('build',['clean'], function(){
 });
 
 
-gulp.task('default', ['build']);
+// run build task and serve project using a local web server
+gulp.task('serve', ['build'], function() {
+  return browserSync.init({
+        server: {
+            baseDir: "./"
+        }
+    });
+});
+
+gulp.task('default', ['serve']);
 
 gulp.task('watch', function(){
-  gulp.watch('directory/file', [task(script)]);
+  gulp.watch('sass/**/*.scss', ['styles']);
 });
 
 
