@@ -40,7 +40,7 @@ gulp.task('clean', function(){
 
 
 gulp.task('build',['clean'], function(){
-
+  gulp.start(['scripts', 'styles', 'images']);
 });
 
 
